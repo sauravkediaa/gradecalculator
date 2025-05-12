@@ -3,23 +3,38 @@ import { computeCGPA } from '../utils/gradeUtils';
 import Papa from 'papaparse';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { OverlayTrigger, Tooltip, Form, Button } from 'react-bootstrap';
 
 export default function CGPACalculator() {
+    const defaultRows = [{ credits: '', gpa: '' }];
     const [rows, setRows] = useState(
-        () => JSON.parse(localStorage.getItem('cgpaRows')) || [{ credits: '', gpa: '' }]
+        () => JSON.parse(localStorage.getItem('cgpaRows')) || defaultRows
     );
-    const { cgpa, totalCredits } = computeCGPA(rows);
+    const [manual, setManual] = useState(
+        () => JSON.parse(localStorage.getItem('manualCalc')) || false
+    );
+    const [computed, setComputed] = useState({ cgpa: null, totalCredits: 0 });
+    const [presetCount, setPresetCount] = useState(8);
 
     useEffect(() => {
         localStorage.setItem('cgpaRows', JSON.stringify(rows));
-    }, [rows]);
+        localStorage.setItem('manualCalc', JSON.stringify(manual));
+        if (!manual) calculate();
+    }, [rows, manual]);
+
+    const calculate = () => setComputed(computeCGPA(rows));
 
     const addRow = () => setRows([...rows, { credits: '', gpa: '' }]);
-    const delRow = i => setRows(rows.filter((_, j) => j !== i));
-    const update = i => e => {
-        const copy = [...rows];
-        copy[i][e.target.name] = e.target.value;
-        setRows(copy);
+    const deleteRow = i => setRows(rows.filter((_, idx) => idx !== i));
+    const reset = () => {
+        setRows(defaultRows);
+        setComputed({ cgpa: null, totalCredits: 0 });
+    };
+    const updateCell = i => e => {
+        const newRows = rows.map((r, j) =>
+            j === i ? { ...r, [e.target.name]: e.target.value } : r
+        );
+        setRows(newRows);
     };
 
     const exportCSV = () => {
@@ -32,24 +47,67 @@ export default function CGPACalculator() {
 
     const exportPDF = () => {
         html2canvas(document.getElementById('export-area')).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
+            const img = canvas.toDataURL('image/png');
             const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+            pdf.addImage(img, 'PNG', 10, 10, 190, 0);
             pdf.save('cgpa.pdf');
         });
     };
 
+    // Quick fill N blank rows
+    const setRowsCount = n => {
+        const blank = Array.from({ length: n }, () => ({ credits: '', gpa: '' }));
+        setRows(blank);
+    };
+
     return (
         <div id="export-area">
-            <h3>CGPA Calculator</h3>
-            {rows.map((r, i) => (
+            <h3 className="text-center mb-4">CGPA Calculator</h3>
+
+            {/* Quick Rows */}
+            <div className="text-center mb-3">
+                <Form.Select
+                    value={presetCount}
+                    onChange={e => setPresetCount(+e.target.value)}
+                    className="d-inline-block w-auto me-2"
+                >
+                    {[4, 6, 8, 10, 12].map(n => (
+                        <option key={n} value={n}>{n} Semesters</option>
+                    ))}
+                </Form.Select>
+                <Button
+                    variant="outline-primary"
+                    onClick={() => setRowsCount(presetCount)}
+                >
+                    Quick Add
+                </Button>
+            </div>
+
+            {/* Manual Toggle */}
+            <div className="text-center mb-3">
+                <div className="form-check form-switch d-inline-block">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="manualSwitchCGPA"
+                        checked={manual}
+                        onChange={() => setManual(m => !m)}
+                    />
+                    <label className="form-check-label" htmlFor="manualSwitchCGPA">
+                        Manual Calculation Mode
+                    </label>
+                </div>
+            </div>
+
+            {/* Input Rows */}
+            {rows.map((row, i) => (
                 <div className="row mb-2" key={i}>
                     <div className="col">
                         <input
                             type="number"
                             name="credits"
-                            value={r.credits}
-                            onChange={update(i)}
+                            value={row.credits}
+                            onChange={updateCell(i)}
                             placeholder="Credits"
                             className="form-control"
                         />
@@ -58,26 +116,71 @@ export default function CGPACalculator() {
                         <input
                             type="number"
                             name="gpa"
-                            value={r.gpa}
-                            onChange={update(i)}
+                            value={row.gpa}
+                            onChange={updateCell(i)}
                             placeholder="GPA"
                             className="form-control"
                         />
                     </div>
                     <div className="col-auto">
-                        <button className="btn btn-outline-danger" onClick={() => delRow(i)}>×</button>
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip>Delete this row</Tooltip>}
+                        >
+                            <button
+                                className="btn btn-outline-danger"
+                                onClick={() => deleteRow(i)}
+                            >×</button>
+                        </OverlayTrigger>
                     </div>
                 </div>
             ))}
-            <button className="btn btn-outline-primary mb-3" onClick={addRow}>+ Semester</button>
 
-            <div className="mb-3">
-                <strong>Total Credits:</strong> {totalCredits} &nbsp;|&nbsp;
-                <strong>CGPA:</strong> {cgpa ?? '—'}
+            {/* Add / Calculate / Reset */}
+            <div className="text-center mb-4">
+                <button className="btn btn-outline-primary me-2" onClick={addRow}>
+                    + Semester
+                </button>
+                {manual && (
+                    <button className="btn btn-info me-2" onClick={calculate}>
+                        📊 Calculate
+                    </button>
+                )}
+                <button className="btn btn-warning" onClick={reset}>
+                    ♻ Reset
+                </button>
             </div>
 
-            <button className="btn btn-secondary me-2" onClick={exportCSV}>Export CSV</button>
-            <button className="btn btn-secondary" onClick={exportPDF}>Export PDF/PNG</button>
+            {/* Result */}
+            <div className="text-center mb-4">
+                <div
+                    className="bg-primary text-white rounded p-3 d-inline-block"
+                    style={{ fontSize: '1.6rem' }}
+                >
+                    CGPA: {computed.cgpa ?? '—'} &nbsp;|&nbsp; Credits:{' '}
+                    {computed.totalCredits}
+                </div>
+            </div>
+
+            {/* Export */}
+            <div className="text-center">
+                <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>Export as CSV</Tooltip>}
+                >
+                    <button className="btn btn-secondary me-2" onClick={exportCSV}>
+                        Export CSV
+                    </button>
+                </OverlayTrigger>
+                <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>Export as PDF/PNG</Tooltip>}
+                >
+                    <button className="btn btn-secondary" onClick={exportPDF}>
+                        Export PDF/PNG
+                    </button>
+                </OverlayTrigger>
+            </div>
         </div>
     );
 }
