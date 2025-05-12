@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 export default function NavigationBar({ darkMode, toggleDarkMode }) {
     return (
-        <Navbar bg={darkMode ? 'dark' : 'light'} variant={darkMode ? 'dark' : 'light'} expand="lg" sticky="top">
-            <Container>
+        <Navbar expand="lg" sticky="top" className="w-100">
+            <Container fluid>
                 <Navbar.Brand as={Link} to="/">GradeCalc</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
@@ -15,7 +15,7 @@ export default function NavigationBar({ darkMode, toggleDarkMode }) {
                         <Nav.Link as={Link} to="/converter">Converter</Nav.Link>
                     </Nav>
                     <Button variant="outline-secondary" onClick={toggleDarkMode}>
-                        {darkMode ? 'Light' : 'Dark'}
+                        {darkMode ? '☀️ Light' : '🌙 Dark'}
                     </Button>
                 </Navbar.Collapse>
             </Container>

@@ -13,11 +13,11 @@ import ScaleConverter from './pages/ScaleConverter';
 
 function App() {
   const [darkMode, setDarkMode] = useState(
-    () => JSON.parse(localStorage.getItem('darkMode')) || false
+    () => JSON.parse(localStorage.getItem('darkMode')) ?? true
   );
 
   useEffect(() => {
-    document.body.classList.toggle('dark-mode', darkMode);
+    document.body.classList.toggle('light-mode', !darkMode);
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
@@ -31,18 +31,19 @@ function App() {
 
       <NavigationBar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
 
-      <main className="container my-4">
-        <Routes>
-          <Route path="/" element={<CGPACalculator />} />
-          <Route path="/cgpa" element={<CGPACalculator />} />
-          <Route path="/gpa" element={<GPACalculator />} />
-          <Route path="/converter" element={<ScaleConverter />} />
-          <Route path="*" element={<h4>Page Not Found</h4>} />
-        </Routes>
+      <main className="my-4">
+        <div id="export-area">
+          <Routes>
+            <Route path="/" element={<CGPACalculator />} />
+            <Route path="/cgpa" element={<CGPACalculator />} />
+            <Route path="/gpa" element={<GPACalculator />} />
+            <Route path="/converter" element={<ScaleConverter />} />
+            <Route path="*" element={<h4>Page Not Found</h4>} />
+          </Routes>
+        </div>
       </main>
 
       <AdsBox />
-
       <FeedbackButton />
       <HelpPanel />
     </HelmetProvider>

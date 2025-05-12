@@ -1,0 +1,119 @@
+/* =========================================================
+   theme.css — QuizPortal Color Scheme for GradeCalc
+   ========================================================= */
+
+/* 1. Color Variables */
+:root {
+  --primary: #0d6efd;
+  --secondary: #6c757d;
+  --bg-page: #121212;
+  --bg-navbar: #212529;
+  --bg-panel: #1e1e1e;
+  --bg-input: #2c2c2c;
+  --border: #3a3a3a;
+  --text-light: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --footer-bg: #212529;
+  --footer-border: #3a3a3a;
+  --light-bg-page: #f8f9fa;
+  --light-bg-panel: #ffffff;
+  --light-border: #ddd;
+  --light-text: #212529;
+}
+
+/* 2. Global body styling */
+body {
+  background-color: var(--bg-page);
+  color: var(--text-light);
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
+  font-family: Arial, sans-serif;
+}
+
+body.light-mode {
+  background-color: var(--light-bg-page);
+  color: var(--light-text);
+}
+
+/* 3. Navbar full-width + styling */
+.navbar {
+  background-color: var(--bg-navbar) !important;
+  border-bottom: 1px solid var(--border);
+}
+
+body.light-mode .navbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid var(--light-border);
+}
+
+/* 4. Panel / card background */
+#export-area {
+  background-color: var(--bg-panel);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s;
+}
+
+body.light-mode #export-area {
+  background-color: var(--light-bg-panel);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 5. Headings */
+h3 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* 6. Inputs */
+.form-control,
+.form-select {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.form-control::placeholder {
+  color: var(--text-secondary);
+}
+
+body.light-mode .form-control,
+body.light-mode .form-select {
+  background-color: #fff;
+  border: 1px solid var(--light-border);
+  color: var(--light-text);
+}
+
+/* 7. Buttons */
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+  transition: background-color 0.2s, color 0.2s;
+}
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+/* 8. Ads/Footer */
+footer.ad-footer,
+.AdsBox div.border {
+  background-color: var(--footer-bg);
+  border: 1px solid var(--footer-border);
+  color: var(--text-light);
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  max-width: 468px;
+  margin: 20px auto;
+}
+
+body.light-mode footer.ad-footer,
+body.light-mode .AdsBox div.border {
+  background-color: #f1f1f1;
+  border: 1px solid var(--light-border);
+  color: var(--light-text);
+}
