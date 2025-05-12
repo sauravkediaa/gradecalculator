@@ -7,9 +7,11 @@ export default function FeedbackButton() {
     return (
         <>
             <Button
+                title="Give feedback"
                 onClick={() => setShow(true)}
                 style={{ position: 'fixed', bottom: 20, right: 20, borderRadius: '50%' }}
             >💬</Button>
+
 
             <Modal show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton><Modal.Title>Feedback</Modal.Title></Modal.Header>

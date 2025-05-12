@@ -7,9 +7,11 @@ export default function HelpPanel() {
         <>
             <button
                 className="btn btn-info"
+                title="Need help?"
                 style={{ position: 'fixed', bottom: 20, left: 20 }}
                 onClick={() => setShow(true)}
             >?</button>
+
 
             <Offcanvas show={show} onHide={() => setShow(false)} placement="end">
                 <Offcanvas.Header closeButton><Offcanvas.Title>Help & FAQs</Offcanvas.Title></Offcanvas.Header>
