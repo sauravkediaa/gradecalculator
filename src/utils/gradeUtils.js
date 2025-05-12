@@ -1,3 +1,4 @@
+// src/utils/gradeUtils.js
 export function computeCGPA(entries) {
     let totalCredits = 0, sum = 0;
     entries.forEach(({ credits, gpa }) => {
@@ -33,8 +34,27 @@ export function computeGPA(entries) {
 
 export function convertScale(original, target, current) {
     const o = parseFloat(original), n = parseFloat(target), c = parseFloat(current);
-    if ([o, n, c].some(x => isNaN(x) || o <= 0 || n <= 0 || c > o))
-        return { converted: null };
+    if ([o, n, c].some(x => isNaN(x) || o <= 0 || n <= 0 || c > o)) return { converted: null };
     const factor = o / n;
     return { converted: Number((c / factor).toFixed(2)) };
+}
+
+// NEW! Quick CGPA computation
+export function computeQuickCGPA(oldCgpa, oldCredits, newCredits, newGpa) {
+    const oc = parseFloat(oldCredits);
+    const og = parseFloat(oldCgpa);
+    const nc = parseFloat(newCredits);
+    const ng = parseFloat(newGpa);
+
+    // if any input is invalid, return zeros
+    if ([oc, og, nc, ng].some(x => isNaN(x))) {
+        return { newCgpa: null, totalCredits: null };
+    }
+
+    const totalQp = og * oc + ng * nc;
+    const totalCr = oc + nc;
+    return {
+        totalCredits: totalCr,
+        newCgpa: Number((totalQp / totalCr).toFixed(2))
+    };
 }

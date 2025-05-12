@@ -20,6 +20,7 @@ export default function NavigationBar({ darkMode, toggleDarkMode }) {
                         <Nav.Link as={Link} to="/cgpa" className="px-3">CGPA</Nav.Link>
                         <Nav.Link as={Link} to="/gpa" className="px-3">GPA</Nav.Link>
                         <Nav.Link as={Link} to="/converter" className="px-3">Converter</Nav.Link>
+                        <Nav.Link as={Link} to="/quick" className="px-3">Quick CGPA</Nav.Link>
                     </Nav>
                     <Button variant="outline-secondary" onClick={toggleDarkMode}>
                         {darkMode ? '☀️ Light' : '🌙 Dark'}

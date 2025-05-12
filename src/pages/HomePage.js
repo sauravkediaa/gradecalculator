@@ -19,6 +19,9 @@ export default function HomePage() {
                 <Button as={Link} to="/converter" variant="outline-primary" size="lg">
                     Scale Converter
                 </Button>
+                <Button as={Link} to="/quick" variant="outline-primary" size="lg">
+                    Quick CGPA Calculator
+                </Button>
             </div>
         </Container>
     );
