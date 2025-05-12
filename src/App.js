@@ -14,6 +14,7 @@ import CGPACalculator from './pages/CGPACalculator';
 import GPACalculator from './pages/GPACalculator';
 import ScaleConverter from './pages/ScaleConverter';
 import QuickCGPACalculator from './pages/QuickCGPACalculator.js';
+import SideAds from './components/SideAds.js';
 
 function App() {
   const [darkMode, setDarkMode] = useState(
@@ -34,6 +35,8 @@ function App() {
       </Helmet>
 
       <NavigationBar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
+      <SideAds />
+
       <main className="my-4">
         <Routes>
           <Route path="/" element={<HomePage />} />

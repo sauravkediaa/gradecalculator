@@ -1,0 +1,78 @@
+/* src/components/SideAds.css */
+
+.side-ad {
+  position: fixed;
+  top: 90px; /* sits below the navbar */
+  width: 300px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  z-index: 10;
+}
+
+.side-ad--left {
+  left: 0;
+}
+.side-ad--right {
+  right: 0;
+}
+
+.side-ad__placeholder {
+  margin-top: 0.5rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* -----------------------------------------------------------------------------
+     Responsive hiding: remove side ads on smaller viewports
+     ----------------------------------------------------------------------------- */
+
+/* Hide on tablets and below */
+@media (max-width: 1300px) {
+  .side-ad {
+    display: none;
+  }
+}
+
+/* (Optional) You can also hide on very large screens if you want, for example: */
+/*
+  @media (min-width: 1600px) {
+    .side-ad {
+      display: none;
+    }
+  }
+  */
+
+.side-ad__placeholder {
+  margin-top: 0.5rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------
+     Light‐mode overrides for the placeholder
+     ------------------------------------------------------------ */
+body.light-mode .side-ad__placeholder {
+  background: var(--light-bg-panel) !important;
+  border-color: var(--light-border) !important;
+  color: var(--light-text) !important;
+}
+
+/* your responsive hide */
+@media (max-width: 1300px) {
+  .side-ad {
+    display: none !important;
+  }
+}
