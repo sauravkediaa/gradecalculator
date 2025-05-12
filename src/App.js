@@ -1,24 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
+
+import NavigationBar from './components/NavigationBar';
+import AdsBox from './components/AdsBox';
+import FeedbackButton from './components/FeedbackButton';
+import HelpPanel from './components/HelpPanel';
+
+import CGPACalculator from './pages/CGPACalculator';
+import GPACalculator from './pages/GPACalculator';
+import ScaleConverter from './pages/ScaleConverter';
 
 function App() {
+  const [darkMode, setDarkMode] = useState(
+    () => JSON.parse(localStorage.getItem('darkMode')) || false
+  );
+
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', darkMode);
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+  }, [darkMode]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HelmetProvider>
+      <Helmet>
+        <title>VIT Grade Calculator</title>
+        <meta name="description" content="Calculate your GPA, CGPA or convert scales quickly." />
+        <link rel="canonical" href="https://grade.technie.in/" />
+      </Helmet>
+
+      <NavigationBar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
+
+      <main className="container my-4">
+        <Routes>
+          <Route path="/" element={<CGPACalculator />} />
+          <Route path="/cgpa" element={<CGPACalculator />} />
+          <Route path="/gpa" element={<GPACalculator />} />
+          <Route path="/converter" element={<ScaleConverter />} />
+          <Route path="*" element={<h4>Page Not Found</h4>} />
+        </Routes>
+      </main>
+
+      <AdsBox />
+
+      <FeedbackButton />
+      <HelpPanel />
+    </HelmetProvider>
   );
 }
 
