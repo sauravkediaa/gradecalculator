@@ -1,3 +1,5 @@
+/* src/theme.css */
+
 /* =========================================================
    theme.css — QuizPortal Color Scheme for GradeCalc
    ========================================================= */
@@ -22,16 +24,19 @@
   --light-text: #212529;
 }
 
-/* 2. Global body styling */
+/* 2. Root & Body Setup for sticky footer */
 html,
 body {
   height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: var(--bg-page);
-  color: var(--text-light);
+  padding: 0;
+}
+body {
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-page);
+  color: var(--text-light);
+  font-family: Arial, sans-serif;
   transition: background-color 0.3s, color 0.3s;
 }
 body.light-mode {
@@ -39,7 +44,14 @@ body.light-mode {
   color: var(--light-text);
 }
 
-/* 3. Navbar full-width + styling */
+/* 3. Make #root full-height flex container too */
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* 4. Navbar full-width + styling */
 .navbar {
   width: 100%;
   background-color: var(--bg-navbar) !important;
@@ -59,7 +71,7 @@ body.light-mode .navbar {
   text-decoration: underline;
 }
 
-/* 4. Main content centering */
+/* 5. Main content flex-grow so footer is pushed down */
 main {
   flex: 1;
   padding: 2rem 1rem;
@@ -67,7 +79,7 @@ main {
   margin: auto;
 }
 
-/* 5. Panel / card background override */
+/* 6. Override panel/card background to be transparent */
 #export-area {
   background: transparent !important;
   box-shadow: none !important;
@@ -78,14 +90,14 @@ body.light-mode #export-area {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 6. Headings */
+/* 7. Headings */
 h3 {
   color: var(--primary);
   text-align: center;
   margin-bottom: 1rem;
 }
 
-/* 7. Form controls */
+/* 8. Form controls */
 .form-control,
 .form-select {
   background-color: var(--bg-input);
@@ -103,7 +115,7 @@ body.light-mode .form-select {
   color: var(--light-text);
 }
 
-/* 8. Buttons */
+/* 9. Buttons */
 .btn-outline-primary {
   color: var(--primary);
   border-color: var(--primary);
@@ -114,7 +126,7 @@ body.light-mode .form-select {
   color: #fff;
 }
 
-/* 9. Ads styling */
+/* 10. Ads styling */
 footer.ad-footer,
 .AdsBox div.border {
   background-color: var(--footer-bg);
@@ -133,13 +145,13 @@ body.light-mode .AdsBox div.border {
   color: var(--light-text);
 }
 
-/* 10. Footer styling */
+/* 11. Footer styling (sticky at bottom) */
 .footer {
   background-color: var(--footer-bg);
   border-top: 1px solid var(--footer-border);
   color: var(--text-secondary);
-  transition: background-color 0.3s, color 0.3s;
   width: 100%;
+  /* no extra margin: flex layout handles placement */
 }
 body.light-mode .footer {
   background-color: var(--light-bg-panel);
