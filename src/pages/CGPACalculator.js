@@ -23,7 +23,6 @@ export default function CGPACalculator() {
     }, [rows, manual]);
 
     const calculate = () => setComputed(computeCGPA(rows));
-
     const addRow = () => setRows([...rows, { credits: '', gpa: '' }]);
     const deleteRow = i => setRows(rows.filter((_, idx) => idx !== i));
     const reset = () => {
@@ -36,15 +35,16 @@ export default function CGPACalculator() {
         );
         setRows(newRows);
     };
+    const setRowsCount = n => {
+        setRows(Array.from({ length: n }, () => ({ credits: '', gpa: '' })));
+    };
 
     const exportCSV = () => {
         const csv = Papa.unparse(rows);
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'cgpa.csv'; a.click();
+        const a = document.createElement('a'); a.href = url; a.download = 'cgpa.csv'; a.click();
     };
-
     const exportPDF = () => {
         html2canvas(document.getElementById('export-area')).then(canvas => {
             const img = canvas.toDataURL('image/png');
@@ -54,36 +54,25 @@ export default function CGPACalculator() {
         });
     };
 
-    // Quick fill N blank rows
-    const setRowsCount = n => {
-        const blank = Array.from({ length: n }, () => ({ credits: '', gpa: '' }));
-        setRows(blank);
-    };
-
     return (
-        <div id="export-area">
+        <div id="export-area" className="px-2">
             <h3 className="text-center mb-4">CGPA Calculator</h3>
 
-            {/* Quick Rows */}
+            {/* Quick-add */}
             <div className="text-center mb-3">
                 <Form.Select
                     value={presetCount}
                     onChange={e => setPresetCount(+e.target.value)}
                     className="d-inline-block w-auto me-2"
                 >
-                    {[4, 6, 8, 10, 12].map(n => (
-                        <option key={n} value={n}>{n} Semesters</option>
-                    ))}
+                    {[4, 6, 8, 10, 12].map(n => <option key={n} value={n}>{n} Semesters</option>)}
                 </Form.Select>
-                <Button
-                    variant="outline-primary"
-                    onClick={() => setRowsCount(presetCount)}
-                >
+                <Button variant="outline-primary" onClick={() => setRowsCount(presetCount)}>
                     Quick Add
                 </Button>
             </div>
 
-            {/* Manual Toggle */}
+            {/* Manual toggle */}
             <div className="text-center mb-3">
                 <div className="form-check form-switch d-inline-block">
                     <input
@@ -99,17 +88,20 @@ export default function CGPACalculator() {
                 </div>
             </div>
 
-            {/* Input Rows */}
+            {/* Rows */}
             {rows.map((row, i) => (
-                <div className="row mb-2" key={i}>
+                <div className="row mb-2 align-items-center" key={i}>
+                    <div className="col-auto">
+                        <span className="fw-bold">Semester {i + 1}</span>
+                    </div>
                     <div className="col">
                         <input
                             type="number"
                             name="credits"
                             value={row.credits}
                             onChange={updateCell(i)}
-                            placeholder="Credits"
-                            className="form-control"
+                            placeholder={`Credit ${i + 1}`}
+                            className="form-control text-center"
                         />
                     </div>
                     <div className="col">
@@ -118,67 +110,39 @@ export default function CGPACalculator() {
                             name="gpa"
                             value={row.gpa}
                             onChange={updateCell(i)}
-                            placeholder="GPA"
-                            className="form-control"
+                            placeholder={`GPA ${i + 1}`}
+                            className="form-control text-center"
                         />
                     </div>
                     <div className="col-auto">
-                        <OverlayTrigger
-                            placement="top"
-                            overlay={<Tooltip>Delete this row</Tooltip>}
-                        >
-                            <button
-                                className="btn btn-outline-danger"
-                                onClick={() => deleteRow(i)}
-                            >×</button>
+                        <OverlayTrigger placement="top" overlay={<Tooltip>Delete this row</Tooltip>}>
+                            <button className="btn btn-outline-danger" onClick={() => deleteRow(i)}>×</button>
                         </OverlayTrigger>
                     </div>
                 </div>
             ))}
 
-            {/* Add / Calculate / Reset */}
+            {/* Controls */}
             <div className="text-center mb-4">
-                <button className="btn btn-outline-primary me-2" onClick={addRow}>
-                    + Semester
-                </button>
-                {manual && (
-                    <button className="btn btn-info me-2" onClick={calculate}>
-                        📊 Calculate
-                    </button>
-                )}
-                <button className="btn btn-warning" onClick={reset}>
-                    ♻ Reset
-                </button>
+                <button className="btn btn-outline-primary me-2" onClick={addRow}>+ Semester</button>
+                {manual && <button className="btn btn-info me-2" onClick={calculate}>📊 Calculate</button>}
+                <button className="btn btn-warning" onClick={reset}>♻ Reset</button>
             </div>
 
             {/* Result */}
             <div className="text-center mb-4">
-                <div
-                    className="bg-primary text-white rounded p-3 d-inline-block"
-                    style={{ fontSize: '1.6rem' }}
-                >
-                    CGPA: {computed.cgpa ?? '—'} &nbsp;|&nbsp; Credits:{' '}
-                    {computed.totalCredits}
+                <div className="bg-primary text-white rounded p-3 d-inline-block" style={{ fontSize: '1.6rem' }}>
+                    CGPA: {computed.cgpa ?? '—'} &nbsp;|&nbsp; Credits: {computed.totalCredits}
                 </div>
             </div>
 
             {/* Export */}
-            <div className="text-center">
-                <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>Export as CSV</Tooltip>}
-                >
-                    <button className="btn btn-secondary me-2" onClick={exportCSV}>
-                        Export CSV
-                    </button>
+            <div className="text-center mb-4">
+                <OverlayTrigger placement="top" overlay={<Tooltip>Export as CSV</Tooltip>}>
+                    <button className="btn btn-secondary me-2" onClick={exportCSV}>Export CSV</button>
                 </OverlayTrigger>
-                <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>Export as PDF/PNG</Tooltip>}
-                >
-                    <button className="btn btn-secondary" onClick={exportPDF}>
-                        Export PDF/PNG
-                    </button>
+                <OverlayTrigger placement="top" overlay={<Tooltip>Export as PDF/PNG</Tooltip>}>
+                    <button className="btn btn-secondary" onClick={exportPDF}>Export PDF/PNG</button>
                 </OverlayTrigger>
             </div>
         </div>
