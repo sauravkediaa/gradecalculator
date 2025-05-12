@@ -23,11 +23,15 @@
 }
 
 /* 2. Global body styling */
+html,
 body {
-  background-color: var(--bg-page);
-  color: var(--text-light);
+  height: 100%;
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
   transition: background-color 0.3s, color 0.3s;
 }
 body.light-mode {
@@ -45,8 +49,25 @@ body.light-mode .navbar {
   background-color: #ffffff !important;
   border-bottom: 1px solid var(--light-border);
 }
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--text-light);
+}
+.navbar-light .navbar-nav .nav-link {
+  color: var(--light-text);
+}
+.navbar-nav .nav-link:hover {
+  text-decoration: underline;
+}
 
-/* 4. Panel / card background */
+/* 4. Main content centering */
+main {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 860px;
+  margin: auto;
+}
+
+/* 5. Panel / card background override */
 #export-area {
   background: transparent !important;
   box-shadow: none !important;
@@ -57,14 +78,14 @@ body.light-mode #export-area {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 5. Headings */
+/* 6. Headings */
 h3 {
   color: var(--primary);
   text-align: center;
   margin-bottom: 1rem;
 }
 
-/* 6. Form controls */
+/* 7. Form controls */
 .form-control,
 .form-select {
   background-color: var(--bg-input);
@@ -82,7 +103,7 @@ body.light-mode .form-select {
   color: var(--light-text);
 }
 
-/* 7. Buttons */
+/* 8. Buttons */
 .btn-outline-primary {
   color: var(--primary);
   border-color: var(--primary);
@@ -93,7 +114,7 @@ body.light-mode .form-select {
   color: #fff;
 }
 
-/* 8. Ads/Footer */
+/* 9. Ads styling */
 footer.ad-footer,
 .AdsBox div.border {
   background-color: var(--footer-bg);
@@ -112,20 +133,23 @@ body.light-mode .AdsBox div.border {
   color: var(--light-text);
 }
 
-.navbar-dark .navbar-nav .nav-link {
-  color: var(--text-light);
+/* 10. Footer styling */
+.footer {
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  color: var(--text-secondary);
+  transition: background-color 0.3s, color 0.3s;
+  width: 100%;
 }
-.navbar-light .navbar-nav .nav-link {
+body.light-mode .footer {
+  background-color: var(--light-bg-panel);
+  border-top: 1px solid var(--light-border);
   color: var(--light-text);
 }
-
-.navbar-nav .nav-link:hover {
-  text-decoration: underline;
+.footer a {
+  color: inherit;
+  text-decoration: none;
 }
-
-/* Main content centering */
-main {
-  padding: 2rem 1rem;
-  max-width: 860px;
-  margin: auto;
+.footer a:hover {
+  text-decoration: underline;
 }

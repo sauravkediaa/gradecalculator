@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
@@ -6,7 +7,9 @@ import NavigationBar from './components/NavigationBar';
 import AdsBox from './components/AdsBox';
 import FeedbackButton from './components/FeedbackButton';
 import HelpPanel from './components/HelpPanel';
+import Footer from './components/Footer';
 
+import HomePage from './pages/HomePage';
 import CGPACalculator from './pages/CGPACalculator';
 import GPACalculator from './pages/GPACalculator';
 import ScaleConverter from './pages/ScaleConverter';
@@ -25,27 +28,32 @@ function App() {
     <HelmetProvider>
       <Helmet>
         <title>VIT Grade Calculator</title>
-        <meta name="description" content="Calculate your GPA, CGPA or convert scales quickly." />
+        <meta
+          name="description"
+          content="Calculate your GPA, CGPA or convert scales quickly."
+        />
         <link rel="canonical" href="https://grade.technie.in/" />
       </Helmet>
 
-      <NavigationBar darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
+      <NavigationBar
+        darkMode={darkMode}
+        toggleDarkMode={() => setDarkMode(!darkMode)}
+      />
 
       <main className="my-4">
-        <div id="export-area">
-          <Routes>
-            <Route path="/" element={<CGPACalculator />} />
-            <Route path="/cgpa" element={<CGPACalculator />} />
-            <Route path="/gpa" element={<GPACalculator />} />
-            <Route path="/converter" element={<ScaleConverter />} />
-            <Route path="*" element={<h4>Page Not Found</h4>} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cgpa" element={<CGPACalculator />} />
+          <Route path="/gpa" element={<GPACalculator />} />
+          <Route path="/converter" element={<ScaleConverter />} />
+          <Route path="*" element={<h4>Page Not Found</h4>} />
+        </Routes>
       </main>
 
       <AdsBox />
       <FeedbackButton />
       <HelpPanel />
+      <Footer />
     </HelmetProvider>
   );
 }
