@@ -33,8 +33,29 @@ export default function GPACalculator() {
         setResult({ gpa: null, totalCredits: 0 });
     };
     const updateCell = i => e => {
+        const { name, value } = e.target;
+    
+        // Let user type freely — allow blank input while editing
+        if (value === '') {
+            const newRows = rows.map((r, j) =>
+                j === i ? { ...r, [name]: '' } : r
+            );
+            return setRows(newRows);
+        }
+    
+        let newValue = value;
+    
+        // Prevent negative numbers
+        if (name === 'credits') {
+            const num = parseFloat(value);
+            if (isNaN(num)) return;
+    
+            // Clamp to minimum 0
+            newValue = Math.max(0, num);
+        }
+    
         const newRows = rows.map((r, j) =>
-            j === i ? { ...r, [e.target.name]: e.target.value } : r
+            j === i ? { ...r, [name]: newValue } : r
         );
         setRows(newRows);
     };
