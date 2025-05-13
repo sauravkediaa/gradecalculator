@@ -90,7 +90,7 @@ export default function CGPACalculator() {
 
             {/* Rows */}
             {rows.map((row, i) => (
-                <div className="row mb-2 align-items-center" key={i}>
+                <div className="row mb-4 align-items-center" key={i}>
                     <div className="col-auto">
                         <span className="fw-bold">Semester {i + 1}</span>
                     </div>
