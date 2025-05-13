@@ -45,7 +45,7 @@ export default function ScaleConverter() {
 
     return (
         <div id="export-area" className="px-2">
-            <h3 className="text-center mb-4">Scale Converter</h3>
+            <h1 className="text-center mb-4">Scale Converter</h1>
 
             {/* Manual toggle */}
             <div className="text-center mb-3">

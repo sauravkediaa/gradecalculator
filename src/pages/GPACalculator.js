@@ -63,7 +63,7 @@ export default function GPACalculator() {
 
     return (
         <div id="export-area" className="px-2">
-            <h3 className="text-center mb-4">GPA Calculator</h3>
+            <h1 className="text-center mb-4">GPA Calculator</h1>
 
             {/* Quick-add */}
             <div className="text-center mb-3">
@@ -165,7 +165,7 @@ export default function GPACalculator() {
             {/* Result */}
             <div className="text-center mb-4">
                 <div
-                    className="bg-primary text-white rounded p-3 d-inline-block"
+                    className="text-white rounded p-3 d-inline-block"
                     style={{ fontSize: '1.6rem' }}
                 >
                     GPA: {result.gpa ?? '—'} &nbsp;|&nbsp; Credits: {result.totalCredits}

@@ -56,7 +56,7 @@ export default function CGPACalculator() {
 
     return (
         <div id="export-area" className="px-2">
-            <h3 className="text-center mb-4">CGPA Calculator</h3>
+            <h1 className="text-center mb-4">CGPA Calculator</h1>
 
             {/* Quick-add */}
             <div className="text-center mb-3">
@@ -131,7 +131,7 @@ export default function CGPACalculator() {
 
             {/* Result */}
             <div className="text-center mb-4">
-                <div className="bg-primary text-white rounded p-3 d-inline-block" style={{ fontSize: '1.6rem' }}>
+                <div className="text-white rounded p-3 d-inline-block" style={{ fontSize: '1.6rem' }}>
                     CGPA: {computed.cgpa ?? '—'} &nbsp;|&nbsp; Credits: {computed.totalCredits}
                 </div>
             </div>

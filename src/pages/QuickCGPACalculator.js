@@ -53,7 +53,7 @@ export default function QuickCGPACalculator() {
 
     return (
         <Container className="py-4">
-            <h3 className="text-center mb-4">Quick CGPA Calculator</h3>
+            <h1 className="text-center mb-4">Quick CGPA Calculator</h1>
 
             {/* Manual / Live toggle */}
             <div className="text-center mb-3">
